@@ -1,37 +1,48 @@
-<p>
-    <img src="http://files.cod3r.com.br/curso-web/imagem1.jpg" alt="Muro da Cidade" width="513" height="342"
-        title="Muro da Cidade por Tarso Bessa">
-</p>
+<div wm-slider>
+    <p>
+        <img src="http://files.cod3r.com.br/curso-web/imagem1.jpg" alt="Muro da Cidade" width="513" height="342"
+            title="Muro da Cidade por Tarso Bessa">
+    </p>
 
-<p>
-    <img src="http://files.cod3r.com.br/curso-web/imagem2.gif" alt="Intro Cod3r" height="342">
-</p>
+    <p>
+        <img src="http://files.cod3r.com.br/curso-web/imagem2.gif" alt="Intro Cod3r" height="342">
+    </p>
 
-<p class="circular">
-    <img src="http://files.cod3r.com.br/curso-web/imagem3.png" alt="Rio de Janeiro" height="342">
-</p>
+    <p class="circular">
+        <img src="http://files.cod3r.com.br/curso-web/imagem3.png" alt="Rio de Janeiro" height="342">
+    </p>
 
-<p class="texto">
-    <img src="http://files.cod3r.com.br/curso-web/avatar.jpg" alt="Avatar" height="50" align="left">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non tortor vel arcu eleifend aliquam. Nulla
-    facilisi. Vestibulum quis mattis sem. Praesent interdum nec diam et laoreet. Phasellus tellus magna, volutpat id
-    mauris in, mollis ornare mi. Nullam suscipit metus sed enim feugiat congue. Nam nec nisl consequat, pulvinar lorem
-    sit amet, vestibulum neque. Pellentesque quis ex nec lorem efficitur finibus et sed arcu. Vivamus ultricies urna sed
-    rhoncus ullamcorper. Morbi suscipit purus in lectus feugiat commodo. Duis porttitor lacus venenatis nisl suscipit
-    sodales. Pellentesque quis pharetra nisl. Phasellus laoreet nulla non sapien finibus varius. Suspendisse facilisis
-    justo rutrum pulvinar pretium. Cras porttitor sed ligula a euismod.
-</p>
+    <p class="texto">
+        <img src="http://files.cod3r.com.br/curso-web/avatar.jpg" alt="Avatar" height="50" align="left">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non tortor vel arcu eleifend aliquam. Nulla
+        facilisi. Vestibulum quis mattis sem. Praesent interdum nec diam et laoreet. Phasellus tellus magna, volutpat id
+        mauris in, mollis ornare mi. Nullam suscipit metus sed enim feugiat congue. Nam nec nisl consequat, pulvinar
+        lorem
+        sit amet, vestibulum neque. Pellentesque quis ex nec lorem efficitur finibus et sed arcu. Vivamus ultricies urna
+        sed
+        rhoncus ullamcorper. Morbi suscipit purus in lectus feugiat commodo. Duis porttitor lacus venenatis nisl
+        suscipit
+        sodales. Pellentesque quis pharetra nisl. Phasellus laoreet nulla non sapien finibus varius. Suspendisse
+        facilisis
+        justo rutrum pulvinar pretium. Cras porttitor sed ligula a euismod.
+    </p>
 
-<p class="cidade"></p>
+    <p class="cidade"></p>
 
-<p>
-    <picture>
-        <source srcset="http://files.cod3r.com.br/curso-web/logo-larga.png" media="(min-width: 600px)">
-        <img src="http://files.cod3r.com.br/curso-web/logo-estreita.png" alt="Logo">
-    </picture>
-</p>
+    <p>
+        <picture>
+            <source srcset="http://files.cod3r.com.br/curso-web/logo-larga.png" media="(min-width: 600px)">
+            <img src="http://files.cod3r.com.br/curso-web/logo-estreita.png" alt="Logo">
+        </picture>
+    </p>
+</div>
 
 <style>
+    p {
+        position: absolute;
+        display: none;
+    }
+
     .circular {
         width: 513px;
         background-color: #444;
@@ -54,3 +65,48 @@
         background-size: 200%;
     }
 </style>
+
+<script>
+    function mover(elem, inicio, fim, passo, callback) {
+        const novoInicio = inicio - passo
+        if (novoInicio >= fim) {
+            elem.style.left = novoInicio + 'px'
+            setTimeout(() => mover(elem, novoInicio, fim, passo, callback), 7);
+        } else {
+            callback()
+        }
+    }
+
+    // const p = document.querySelector('[wm-slider] > p')
+    // p.style.display = 'block'
+    // mover(p, 1500, -520, 5, () => {
+    //     console.log('Terminou!');
+    // })
+
+    function slider() {
+        const elementos = document.querySelectorAll('[wm-slider] > p')
+        const slides = Array.from(elementos)
+        exibirSlide(slides, slides[0])
+    }
+
+    function exibirSlide(slides, slide) {
+        slide.style.display = 'block'
+
+        const inicio = innerWidth
+        const fim = -slide.clientWidth
+
+        slide.style.left = `${inicio}px`
+
+        mover(slide, inicio, fim, 5, () => {
+            slide.style.display = 'none'
+            exibirSlide(slides, getProximo(slides, slide))
+        })
+    }
+
+    function getProximo(lista, atual) {
+        const i = lista.indexOf(atual) + 1
+        return i  < lista.length ? lista[i] : lista[0]
+    }
+
+    slider()
+</script>
